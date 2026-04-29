@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>명언 생성기</title>
+    <link rel="stylesheet" href="./style.css" />
+  </head>
+  <body>
+    <main class="app" aria-labelledby="app-title">
+      <section class="quote-card" aria-describedby="quote-help">
+        <div class="card-header">
+          <h1 id="app-title">오늘의 명언</h1>
+          <button id="theme-btn" type="button" class="theme-btn" aria-label="테마 전환">다크 테마</button>
+        </div>
+        <p id="quote-help" class="helper-text">
+          버튼을 눌러 새로운 명언을 확인하고, 직접 명언을 추가해 보세요.
+        </p>
+
+        <figure class="quote-display" aria-live="polite" aria-atomic="true">
+          <blockquote id="quote-text">로딩 중...</blockquote>
+          <figcaption id="quote-author"></figcaption>
+          <p id="quote-source" class="source-badge" hidden></p>
+        </figure>
+
+        <div class="button-row" role="group" aria-label="명언 동작 버튼">
+          <button id="next-btn" type="button">다음 명언</button>
+          <button id="copy-btn" type="button">클립보드 복사</button>
+          <button id="share-btn" type="button">공유</button>
+          <button id="delete-btn" type="button" class="danger">내 명언 삭제</button>
+        </div>
+
+        <p id="status-message" class="status-message" role="status" aria-live="polite"></p>
+      </section>
+
+      <section class="input-card" aria-labelledby="input-title">
+        <h2 id="input-title">내 명언 추가</h2>
+        <form id="quote-form" novalidate>
+          <label for="input-text">명언 문구</label>
+          <textarea
+            id="input-text"
+            name="text"
+            rows="3"
+            maxlength="180"
+            required
+            placeholder="예: 꾸준함은 재능을 이긴다."
+          ></textarea>
+
+          <label for="input-author">저자</label>
+          <input
+            id="input-author"
+            name="author"
+            type="text"
+            maxlength="40"
+            required
+            placeholder="예: 나"
+          />
+
+          <button id="save-btn" type="submit">내 명언 저장</button>
+        </form>
+      </section>
+    </main>
+
+    <script src="./app.js"></script>
+  </body>
+</html>

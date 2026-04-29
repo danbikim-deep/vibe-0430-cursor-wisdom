@@ -1,0 +1,268 @@
+:root {
+  color-scheme: light dark;
+  --bg: #f4f6fb;
+  --card: #ffffff;
+  --text: #1e2430;
+  --muted: #5b6577;
+  --primary: #4a63ff;
+  --primary-hover: #3a51e0;
+  --danger: #d73a49;
+  --danger-hover: #bb2432;
+  --ring: #93a4ff;
+  --shadow: 0 10px 30px rgba(31, 41, 55, 0.12);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  font-family: "Segoe UI", "Apple SD Gothic Neo", sans-serif;
+  background: linear-gradient(180deg, #eef2ff, var(--bg));
+  color: var(--text);
+}
+
+.app {
+  width: min(960px, 100% - 2rem);
+  margin: 2rem auto;
+  display: grid;
+  gap: 1rem;
+}
+
+.quote-card,
+.input-card {
+  background: var(--card);
+  border-radius: 16px;
+  box-shadow: var(--shadow);
+  padding: 1rem;
+}
+
+.card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.8rem;
+}
+
+h1,
+h2 {
+  margin: 0 0 0.4rem;
+}
+
+.helper-text {
+  margin: 0 0 1rem;
+  color: var(--muted);
+}
+
+.quote-display {
+  background: #f8faff;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  padding: 1rem;
+}
+
+#quote-text {
+  margin: 0;
+  font-size: 1.1rem;
+  line-height: 1.6;
+}
+
+#quote-author {
+  margin-top: 0.75rem;
+  font-weight: 700;
+  color: #384151;
+}
+
+.source-badge {
+  margin: 0.5rem 0 0;
+  display: inline-block;
+  background: #e5edff;
+  color: #324db7;
+  font-size: 0.78rem;
+  font-weight: 700;
+  border-radius: 999px;
+  padding: 0.2rem 0.5rem;
+}
+
+.button-row {
+  margin-top: 1rem;
+  display: grid;
+  gap: 0.5rem;
+}
+
+button,
+input,
+textarea {
+  font: inherit;
+}
+
+button {
+  border: 0;
+  border-radius: 10px;
+  background: var(--primary);
+  color: #fff;
+  padding: 0.7rem 0.9rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+button:hover {
+  background: var(--primary-hover);
+}
+
+button.danger {
+  background: var(--danger);
+}
+
+button.danger:hover {
+  background: var(--danger-hover);
+}
+
+.theme-btn {
+  width: auto;
+  white-space: nowrap;
+  padding: 0.5rem 0.75rem;
+}
+
+button:focus-visible,
+input:focus-visible,
+textarea:focus-visible {
+  outline: 3px solid var(--ring);
+  outline-offset: 2px;
+}
+
+.status-message {
+  min-height: 1.2rem;
+  margin: 0.8rem 0 0;
+  color: var(--muted);
+  font-size: 0.95rem;
+}
+
+form {
+  display: grid;
+  gap: 0.5rem;
+}
+
+label {
+  font-weight: 600;
+}
+
+textarea,
+input {
+  width: 100%;
+  border: 1px solid #cbd5e1;
+  border-radius: 10px;
+  padding: 0.65rem;
+  background: #fff;
+  color: var(--text);
+}
+
+.quote-fade {
+  animation: quoteFade 260ms ease;
+}
+
+@keyframes quoteFade {
+  from {
+    opacity: 0.25;
+    transform: translateY(4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (min-width: 760px) {
+  .app {
+    margin: 3rem auto;
+    grid-template-columns: 1.4fr 1fr;
+    align-items: start;
+  }
+
+  .button-row {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+:root[data-theme="dark"] {
+  --bg: #0f1625;
+  --card: #111c30;
+  --text: #ebf1ff;
+  --muted: #a9b5cc;
+  --primary: #6b84ff;
+  --primary-hover: #8095ff;
+  --ring: #9eb1ff;
+  --shadow: none;
+}
+
+:root[data-theme="dark"] body {
+  background: linear-gradient(180deg, #0e1830, var(--bg));
+}
+
+:root[data-theme="dark"] .quote-display {
+  background: #0d1728;
+  border-color: #27344d;
+}
+
+:root[data-theme="dark"] #quote-author {
+  color: #c5d3f5;
+}
+
+:root[data-theme="dark"] .source-badge {
+  background: #243a78;
+  color: #dde6ff;
+}
+
+:root[data-theme="dark"] textarea,
+:root[data-theme="dark"] input {
+  background: #0d1728;
+  border-color: #33445f;
+  color: var(--text);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme]) {
+    --bg: #0f1625;
+    --card: #111c30;
+    --text: #ebf1ff;
+    --muted: #a9b5cc;
+    --primary: #6b84ff;
+    --primary-hover: #8095ff;
+    --ring: #9eb1ff;
+    --shadow: none;
+  }
+
+  :root:not([data-theme]) body {
+    background: linear-gradient(180deg, #0e1830, var(--bg));
+  }
+
+  :root:not([data-theme]) .quote-display {
+    background: #0d1728;
+    border-color: #27344d;
+  }
+
+  :root:not([data-theme]) #quote-author {
+    color: #c5d3f5;
+  }
+
+  :root:not([data-theme]) .source-badge {
+    background: #243a78;
+    color: #dde6ff;
+  }
+
+  :root:not([data-theme]) textarea,
+  :root:not([data-theme]) input {
+    background: #0d1728;
+    border-color: #33445f;
+    color: var(--text);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0ms !important;
+    transition-duration: 0ms !important;
+  }
+}
