@@ -31,12 +31,12 @@ const statusMessage = document.getElementById("status-message");
 const nextBtn = document.getElementById("next-btn");
 const copyBtn = document.getElementById("copy-btn");
 const shareBtn = document.getElementById("share-btn");
-const deleteBtn = document.getElementById("delete-btn");
 const themeBtn = document.getElementById("theme-btn");
 const quoteForm = document.getElementById("quote-form");
 const inputText = document.getElementById("input-text");
 const inputAuthor = document.getElementById("input-author");
 const quoteDisplay = document.querySelector(".quote-display");
+const myQuotesList = document.getElementById("my-quotes-list");
 
 let userQuotes = loadUserQuotes();
 let currentQuote = null;
@@ -72,7 +72,7 @@ function applyTheme(theme) {
   currentTheme = theme;
   document.documentElement.setAttribute("data-theme", theme);
   const isDark = theme === "dark";
-  themeBtn.textContent = isDark ? "라이트 테마" : "다크 테마";
+  themeBtn.textContent = isDark ? "☀️" : "🌙";
   themeBtn.setAttribute("aria-label", isDark ? "라이트 테마로 전환" : "다크 테마로 전환");
   themeBtn.setAttribute("aria-pressed", isDark ? "true" : "false");
 }
@@ -110,12 +110,40 @@ function showQuote(quote) {
   if (quote.source === "user") {
     quoteSource.hidden = false;
     quoteSource.textContent = "내가 추가한 명언";
-    deleteBtn.disabled = false;
   } else {
     quoteSource.hidden = true;
     quoteSource.textContent = "";
-    deleteBtn.disabled = true;
   }
+}
+
+function renderUserQuotesList() {
+  if (!myQuotesList) return;
+
+  if (userQuotes.length === 0) {
+    myQuotesList.innerHTML = '<li class="empty-list">아직 추가한 명언이 없어요.</li>';
+    return;
+  }
+
+  myQuotesList.innerHTML = userQuotes
+    .map(
+      (quote) => `
+        <li class="my-quote-item">
+          <div>
+            <p class="my-quote-text">"${quote.text}"</p>
+            <p class="my-quote-author">- ${quote.author}</p>
+          </div>
+          <button
+            type="button"
+            class="delete-quote-btn"
+            data-delete-id="${quote.id}"
+            aria-label="${quote.author} 명언 삭제"
+          >
+            ❌
+          </button>
+        </li>
+      `
+    )
+    .join("");
 }
 
 function announce(message) {
@@ -195,18 +223,6 @@ shareBtn.addEventListener("click", async () => {
   announce("트위터 공유 링크를 열었어요.");
 });
 
-deleteBtn.addEventListener("click", () => {
-  if (!currentQuote || currentQuote.source !== "user") {
-    announce("삭제할 사용자 명언이 없어요.");
-    return;
-  }
-
-  userQuotes = userQuotes.filter((q) => q.id !== currentQuote.id);
-  saveUserQuotes();
-  showQuote(pickRandomQuote());
-  announce("내 명언을 삭제했어요.");
-});
-
 themeBtn.addEventListener("click", toggleTheme);
 
 quoteForm.addEventListener("submit", (event) => {
@@ -226,13 +242,36 @@ quoteForm.addEventListener("submit", (event) => {
 
   userQuotes.unshift(newQuote);
   saveUserQuotes();
+  renderUserQuotesList();
   showQuote(newQuote);
   quoteForm.reset();
   announce("내 명언을 저장했어요.");
 });
 
-[nextBtn, copyBtn, shareBtn, deleteBtn, themeBtn].forEach(addKeyboardActivation);
+myQuotesList.addEventListener("click", (event) => {
+  const target = event.target;
+  if (!(target instanceof HTMLElement)) return;
+
+  const button = target.closest(".delete-quote-btn");
+  if (!button) return;
+
+  const quoteId = button.dataset.deleteId;
+  if (!quoteId) return;
+
+  userQuotes = userQuotes.filter((q) => q.id !== quoteId);
+  saveUserQuotes();
+  renderUserQuotesList();
+
+  if (currentQuote && currentQuote.id === quoteId) {
+    showQuote(pickRandomQuote());
+  }
+
+  announce("목록에서 명언을 삭제했어요.");
+});
+
+[nextBtn, copyBtn, shareBtn, themeBtn].forEach(addKeyboardActivation);
 
 applyTheme(detectInitialTheme());
+renderUserQuotesList();
 showQuote(pickRandomQuote());
 announce("명언 생성기가 준비되었어요.");
